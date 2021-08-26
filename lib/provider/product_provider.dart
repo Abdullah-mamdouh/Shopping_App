@@ -10,7 +10,7 @@ class ProductProvider with ChangeNotifier {
 //String name = '';
 bool isFavorite = false;
 Product _p = new Product();
-List<Product> products = [] ;
+Future products ;
 int selectedIndex =0;
 String uid= '' , name = '' , email = '' ,URLImage ;
 File fileImage ;
@@ -46,8 +46,8 @@ saveImage(String urlImage){
   notifyListeners();
 }
 
-saveListProduct(Product product){
-products.add(product);
+getProducts_FromAPI(Future product){
+products = product ;
 notifyListeners();
 }
 

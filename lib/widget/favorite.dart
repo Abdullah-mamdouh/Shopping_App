@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_dsc_4/Model/product.dart';
 import 'package:final_dsc_4/provider/product_provider.dart';
+import 'package:final_dsc_4/widget/shap_of_print.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -51,56 +52,26 @@ class Favorite extends StatelessWidget {
                       child: Card(
                         child: Row(
                           children: [
-                            Container(
-                              width: MediaQuery.of(context).size.height*0.2,
-                              height: MediaQuery.of(context).size.height*0.2,
-                              //child:Image.network(document['image_URL'],fit: BoxFit.cover,),
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image:  NetworkImage(data[index]['product_image'],),
-                                    fit: BoxFit.cover,
-                                  ),
-                                  borderRadius: BorderRadius.circular(15),
-                                  border: Border.all(
-                                    color: Colors.black,
-                                    width: 1.5,
-                                  )
-                              ),
-                            ),
-
+                            Shape().showImage(context, data[index]['image']),
                             Expanded(
                               child: Container(
-                                padding: EdgeInsets.only(top: 25,left: 10,right: 10,bottom: 10),
+                                padding: EdgeInsets.all(10),
                                 child: Column(
-                                  //mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
-
-                                    Text(
-                                        data[index]['product_name'].toString(), style: TextStyle(
-                                        fontWeight: FontWeight.bold
-                                    )
-                                    ),
+                                    Shape().printText(data[index]['title'],),
                                     SizedBox(height: 10,),
-                                    //Text(document['product_description']),
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
-                                        Text("Price: ",
-                                            style:TextStyle(
-                                                fontWeight: FontWeight.bold,fontSize: 13
-                                            )
-                                        ),
-                                        Text(data[index]['product_price'].toString(),
-                                          style:TextStyle(
-                                            fontWeight: FontWeight.bold,color: Colors.red,),
-                                        ),
-
-                                        Text(" EGP ",style:TextStyle(
-                                          fontWeight: FontWeight.bold,color: Colors.green,
-                                        )),
+                                        Shape().printText("Price :  ",),
+                                        Shape().printText(data[index]['price'].toString(),
+                                          color: Colors.red,),
+                                        Shape().printText(" EGP",
+                                            color: Colors.green),
                                       ],
                                     ),
+
 //                            Text(
 //                                "Price: " + data[index]['price'].toString()
 //                            ),
@@ -111,29 +82,18 @@ class Favorite extends StatelessWidget {
                                         TextButton(
                                           onPressed: ()async{
                                             List shoppingList = [
-                                              {'product_name':data[index]['product_name'],
-                                                'product_price':data[index]['product_price'],
-                                                'product_description':data[index]['product_description'],
-                                                'product_image':data[index]['product_image'],
-                                                'product_category':data[index]['product_category']}
+                                              {'title':data[index]['title'],
+                                                'price':data[index]['price'],
+                                                'description':data[index]['description'],
+                                                'image':data[index]['image'],
+                                                'category':data[index]['category']}
                                             ];
                                             await Firestore.instance
                                                 .collection('user')
                                                 .document(pref.getString('id'))
                                                 .updateData({'shopping Product':FieldValue.arrayUnion(shoppingList)
                                             });
-//                                await Firestore.instance
-//                                    .collection('user')
-//                                    .document(pref.getString('id'))
-//                                    .updateData({
-//                                  'product':
-//                                  {'product_name':data[index]['title'],
-//                                    'product_price':data[index]['price'],
-//                                    'product_description':data[index]['description'],
-//                                    'product_image':data[index]['image'],
-//                                    'product_category':data[index]['category'],}
-//                                });
-                                          },
+                                            },
                                           child: Text('Buy',style: TextStyle(fontSize: 15,color: Colors.pink),),
                                           //style: TextButton.styleFrom(backgroundColor: Colors.white30),
                                         ),
@@ -144,11 +104,11 @@ class Favorite extends StatelessWidget {
 //                                                  category:data[index]['category'],price: data[index]['price'],
 //                                                  description:data[index]['description']);
                                               List favouriteList = [
-                                                {'product_name':data[index]['product_name'],
-                                                  'product_price':data[index]['product_price'],
-                                                  'product_description':data[index]['product_description'],
-                                                  'product_image':data[index]['product_image'],
-                                                  'product_category':data[index]['product_category']}
+                                                {'title':data[index]['name'],
+                                                  'price':data[index]['price'],
+                                                  'description':data[index]['description'],
+                                                  'image':data[index]['image'],
+                                                  'category':data[index]['category']}
                                               ];
                                               //Provider.of<ProductProvider>(context, listen: false).saveListProduct(p);
                                               print(Provider.of<ProductProvider>(context, listen: false).products);
